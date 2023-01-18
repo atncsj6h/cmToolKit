@@ -1,0 +1,122 @@
+#! /bin/sh
+#
+# Return information about the local @PROJECT@ installation
+
+project="@PROJECT@"
+description="@DESCRIPTION@"
+version="@VERSION@"
+version_string="@VERSION_STRING@"
+
+exename="@EXENAME@"
+inst_prefix="@INST_PREFIX@"
+bindir="@INST_BIN_DIR@"
+incdir="@INST_INC_DIR@"
+libdir="@INST_LIB_DIR@"
+libs="@INST_LIBS@"
+
+if  [ "${exename}". == . ] ; then
+  prefix=$inst_prefix
+else
+  exepath=$( dirname $(which ${exename} ) )
+  prefix=$(dirname ${exepath} )
+fi
+
+usage()
+{
+    echo "Usage $project-config [OPTION]"
+    echo "  version (short)     [$version]"
+    echo "  version (long)      [$version_string]"
+    echo "  description         [$description]"
+
+    if  [ "${exename}".  == . ] ; then
+      echo "  prefix              [$prefix]"
+    else
+      echo "  install prefix      [$inst_prefix]"
+      echo "  prefix              [$prefix]"
+    fi
+
+    echo "  binary directory    [$prefix/$bindir]"
+    echo ""
+    echo "Available values for OPTION"
+    echo "  --cflags            required all CFLAGS"
+    echo "                      [-I$prefix/$incdir]"
+    echo "  --cflags-only-I     required include-dir CFLAGS"
+    echo "                      [-I$prefix/$incdir]"
+    echo "  --cflags-only-other required non-include-dir CFLAGS"
+    echo "                      [N.A]"
+
+    echo "  --libs              required all linker flags "
+    echo "                      [-L$prefix/$libdir $libs]"
+    echo "  --libs-only-L       required LDPATH linker flags"
+    echo "                      [-L$prefix/$libdir]"
+    echo "  --libs-only-l       required LIBNAME linker flags"
+    echo "                      [$libs]"
+    echo "  --libs-only-other   required other linker flags"
+    echo "                      [N.A.]"
+
+    exit $1
+}
+
+if test $# -eq 0; then
+    usage 1
+fi
+
+buff=""
+
+while test $# -gt 0; do
+  case "$1" in
+  # this deals with options in the style
+  # --option=value and extracts the value part
+  # [not currently used]
+    -*=*) value=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+    *) value= ;;
+  esac
+
+  case "$1" in
+
+    # display all the CFLAGS
+    --cflags | -cflags )
+      buff="$buff -I$prefix/$incdir"
+      ;;
+
+    # display only the include-dir CFLAGS
+    --cflags-only-I | -cflags-only-I )
+      buff="$buff -I$prefix/$incdir"
+      ;;
+
+    # display only the non-include-dir CFLAGS
+    --cflags-only-other | -cflags-only-other )
+      usage 1
+      ;;
+
+    # display all the linker flags ( -L -l )
+    --libs | -libs )
+      buff="$buff -L$prefix/$libdir $libs"
+      ;;
+
+    # display only the LDPATH linker flags
+    --libs-only-L | -libs-only-L )
+      buff="$buff $prefix/$libdir"
+     ;;
+
+    # display only the LIBNAME linker flags
+    --libs-only-l | -libs-only-l )
+      buff="$buff $libs"
+      ;;
+
+    # disaply only the other linker flags
+    --libs-only-other | -libs-only-other )
+      usage 1
+      ;;
+
+    *)
+      usage 1
+      ;;
+
+    esac
+    shift
+done
+
+echo "${buff}"
+
+exit 0

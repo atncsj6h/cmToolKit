@@ -1,0 +1,14 @@
+prefix=@INST_PREFIX@
+exec_prefix=${prefix}
+includedir=${prefix}/@INST_INC_DIR@
+libdir=${prefix}/@INST_LIB_DIR@
+libs=@INST_LIBS@
+
+Name:           @PROJECT@
+Version:        @VERSION@
+Version_string: @VERSION_STRING@
+Description:    @DESCRIPTION@
+
+Cflags:         -I${includedir}
+
+Libs:           -L${libdir} ${libs}

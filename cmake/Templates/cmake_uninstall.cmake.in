@@ -1,0 +1,29 @@
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#
+if( NOT EXISTS "@CMAKE_BINARY_DIR@/install_manifest.txt" )
+  message( FATAL_ERROR "
+ Missing install manifest: @CMAKE_BINARY_DIR@/install_manifest.txt" )
+endif()
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#
+file( READ "@CMAKE_BINARY_DIR@/install_manifest.txt" files )
+string( REGEX REPLACE "\n" ";" files "${files}" )
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#
+foreach( file ${files} )
+  set( this "$ENV{DESTDIR}${file}" )
+  message( STATUS "Uninstalling '${this}" )
+  if( EXISTS "${this}" OR IS_SYMLINK "${this}" )
+    execute_process( COMMAND "@CMAKE_COMMAND@" -E remove "${this}"
+      OUTPUT_QUIET ERROR_QUIET RESULT_VARIABLE rm_retc )
+    if( NOT "${rm_retc}" STREQUAL "0" )
+      message( FATAL_ERROR "
+ RC(${rm_retc}) removing file/symlink '${this}'" )
+    endif()
+  else()
+    message( STATUS "File/Symlink '${this}' does not exist" )
+  endif()
+endforeach()
+
