@@ -30,7 +30,7 @@ check_header(
   uchar.h
 )
 
-if( 1 )
+if( 0 )
   #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # configure isoHeaders.h
   if( EXISTS ${TMPL_SOURCE_DIR}/isoHeaders.h.in )
@@ -41,4 +41,4 @@ if( 1 )
       HAVE_ISOHDRS_H
      )
   endif()
-endif( 1 )
+endif()

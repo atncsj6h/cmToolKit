@@ -19,7 +19,7 @@
 
 ##  PREREQUISITES
 *
-* cmake at least 3.24
+* cmake at least 3.25
 * `https://cmake.org/download/`
 * * *
 

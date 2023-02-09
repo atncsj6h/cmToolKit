@@ -9,31 +9,21 @@ include_guard( GLOBAL )
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #
 macro( check_RCS _rcs)
-  string( TOUPPER "${_rcs}_REPOSITORY" RCS_flag )
-  set( "${RCS_flag}" TRUE )
-  set( RCS_path "${CMAKE_SOURCE_DIR}" )
-  vsnap( RCS_path )
-
-  while( NOT ( ${RCS_path} STREQUAL "/" ) )
-    message( "xx ${RCS_path}/.${_rcs} ")
-    if( EXISTS "${RCS_path}/.${_rcs}" )
-      vsnap( RCS_path )
-      set( "${RCS_flag}" TRUE )
+  vsnap( _rcsxxx  )
+  string( TOUPPER "${_rcs}_REPOSITORY" _rcs_flag )
+  set( "${_rcs_flag}" TRUE )
+  set( _rcs_path "${CMAKE_SOURCE_DIR}" )
+  vsnap( _rcs_path )
+  vsnap( _rcsxxx  )
+  while( NOT EXISTS ${_rcs_path}/.${_rcsxxx} )
+    get_filename_component( _rcs_path "${_rcs_path}" DIRECTORY )
+    # message( FATAL_ERROR "just to get out ")
+    vsnap( _rcs_path )
+    if( _rcs_path STREQUAL "/" )
+      set( "${_rcs_flag}" FALSE )
       return()
     endif()
-
-    get_filename_component( RCS_path "${RCS_path}" DIRECTORY )
-    vsnap( RCS_path )
-    if( RCS_path STREQUAL "/" )
-      set( "${RCS_flag}" FALSE )
-      return()
-    endif()
-
   endwhile()
-  vsnap( RCS_path )
-  set( "${RCS_flag}" FALSE )
-  return()
-
 endmacro()
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -41,15 +31,11 @@ endmacro()
 macro( check_RC _rcs )
   if( "${_res}" STREQUAL 0 )
   else()
-    message( "@@  RETCODE (${_res}) " )
-    message( "@@  ERROR   '${_err}' " )
-    message( FATAL_ERROR "" )
+    message( FATAL_ERROR "
+ Command '${_rcs}' in '${CMAKE_SOURCE_DIR}' failed with return code
+ ${_res} " )
   endif()
 endmacro()
-
-check_RCS( git )
-
-return()
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # the commands should be executed with the C locale,

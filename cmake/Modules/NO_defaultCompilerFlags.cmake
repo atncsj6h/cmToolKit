@@ -24,6 +24,16 @@ set( CMAKE_C_FLAGS_RELEASE_INIT   "-g0 -O3 -DNDEBUG -fomit-frame-pointer" )
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #
+unset( CMAKE_C_FLAGS_SNAPSHOT )
+unset( CMAKE_C_FLAGS_SNAPSHOT CACHE )
+unset( CMAKE_C_FLAGS_SNAPSHOT_INIT )
+unset( CMAKE_C_FLAGS_SNAPSHOT_INIT CACHE )
+
+set( CMAKE_C_FLAGS_SNAPSHOT        "-g0 -O3 -DNDEBUG -fomit-frame-pointer" )
+set( CMAKE_C_FLAGS_SNAPSHOT_INIT   "-g0 -O3 -DNDEBUG -fomit-frame-pointer" )
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#
 unset( CMAKE_C_FLAGS_DEBUG )
 unset( CMAKE_C_FLAGS_DEBUG CACHE )
 unset( CMAKE_C_FLAGS_DEBUG_INIT )
@@ -51,6 +61,16 @@ unset( CMAKE_CXX_FLAGS_RELEASE_INIT CACHE )
 
 set( CMAKE_CXX_FLAGS_RELEASE      "-g0 -O3 -DNDEBUG -fomit-frame-pointer" )
 set( CMAKE_CXX_FLAGS_RELEASE_INIT "-g0 -O3 -DNDEBUG -fomit-frame-pointer" )
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#
+unset( CMAKE_CXX_FLAGS_SNAPSHOT )
+unset( CMAKE_CXX_FLAGS_SNAPSHOT CACHE )
+unset( CMAKE_CXX_FLAGS_SNAPSHOT_INIT )
+unset( CMAKE_CXX_FLAGS_SNAPSHOT_INIT CACHE )
+
+set( CMAKE_CXX_FLAGS_SNAPSHOT      "-g0 -O3 -DNDEBUG -fomit-frame-pointer" )
+set( CMAKE_CXX_FLAGS_SNAPSHOT_INIT "-g0 -O3 -DNDEBUG -fomit-frame-pointer" )
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #

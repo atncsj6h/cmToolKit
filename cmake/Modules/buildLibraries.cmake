@@ -32,25 +32,23 @@ function( build_objects )
   list( REMOVE_DUPLICATES args )
 
   foreach( targ ${args} )
-
     add_library( ${targ}_OBJECTS  OBJECT
-      ${${targ}_SRCS} )
-
+      ${${targ}_SRCS}
+    )
     target_include_directories( ${targ}_OBJECTS
       PUBLIC
-      ${${targ}_include_DIRS} )
-
+      ${${targ}_include_DIRS}
+    )
     set_target_properties( ${targ}_OBJECTS
       PROPERTIES
       POSITION_INDEPENDENT_CODE TRUE
-      OUTPUT_NAME ${targ} )
-
+      OUTPUT_NAME ${targ}
+    )
     if( HAVE_IPO_SUPPORT )
       set_property( TARGET ${targ}_OBJECTS
         PROPERTY
         INTERPROCEDURAL_OPTIMIZATION TRUE )
     endif()
-
     foreach( diag ${${targ}_pragma_DIAG} )
       string( MAKE_C_IDENTIFIER "have_diag_${diag}" flag )
       string( TOUPPER "${flag}" flag )
@@ -59,9 +57,7 @@ function( build_objects )
           ${flag} )
       endif()
     endforeach()
-
   endforeach()
-
 endfunction()
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -74,8 +70,13 @@ function( build_shared_library )
     add_library( ${targ} SHARED
       $<TARGET_OBJECTS:${targ}_OBJECTS>
     )
-    set_target_properties( ${targ}
-      PROPERTIES
+    if( SOVERSION )
+      set_property( TARGET ${targ}
+      PROPERTY
+      SOVERSION ${SOVERSION} )
+    endif()
+    set_property( TARGET ${targ}
+      PROPERTY
       POSITION_INDEPENDENT_CODE TRUE
       OUTPUT_NAME ${targ}
     )
@@ -152,7 +153,7 @@ function( build_module)
       ${${targ}_LIBS}
     )
     install( TARGETS ${targ}
-      DESTINATION ${INST_LIB_DIR}/${PROJECT}
+      DESTINATION ${INST_MOD_DIR}
     )
   endforeach()
 endfunction()

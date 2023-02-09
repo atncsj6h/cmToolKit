@@ -4,7 +4,7 @@
 
 project="@PROJECT@"
 description="@DESCRIPTION@"
-version="@VERSION@"
+version="@VERSION_TRIPLET@"
 version_string="@VERSION_STRING@"
 
 exename="@EXENAME@"
@@ -116,6 +116,11 @@ while test $# -gt 0; do
     esac
     shift
 done
+
+# trim leading whitespace
+buff="${buff#"${buff%%[![:space:]]*}"}"
+# trim trailing whitespace
+buff="${buff%"${buff##*[![:space:]]}"}"
 
 echo "${buff}"
 

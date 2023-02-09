@@ -14,24 +14,22 @@ function( build_executable )
   list( REMOVE_DUPLICATES args )
 
   foreach( targ ${args} )
-
     add_executable( ${targ}${SUFF}
-      ${${targ}${SUFF}_SRCS} )
-
+      ${${targ}${SUFF}_SRCS}
+    )
     target_include_directories( ${targ}${SUFF}
       PUBLIC
-      ${${targ}${SUFF}_include_DIRS} )
-
+      ${${targ}${SUFF}_include_DIRS}
+    )
     set_target_properties( ${targ}${SUFF}
       PROPERTIES
-      OUTPUT_NAME ${targ} )
-
+      OUTPUT_NAME ${targ}
+    )
     if( HAVE_IPO_SUPPORT )
       set_property( TARGET ${targ}${SUFF}
         PROPERTY
         INTERPROCEDURAL_OPTIMIZATION TRUE )
     endif()
-
     foreach( diag ${${targ}${SUFF}_pragma_DIAG} )
       string( MAKE_C_IDENTIFIER "have_diag_${diag}" flag )
       string( TOUPPER "${flag}" flag )
@@ -40,16 +38,14 @@ function( build_executable )
           ${flag} )
       endif()
     endforeach()
-
     target_link_libraries( ${targ}${SUFF}
-      ${${targ}${SUFF}_LIBS} )
-
+      ${${targ}${SUFF}_LIBS}
+    )
     install( TARGETS ${targ}${SUFF}
       LIBRARY
-      DESTINATION ${INST_LIB_DIR} )
-
+      DESTINATION ${INST_LIB_DIR}
+    )
   endforeach()
-
 endfunction()
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -58,14 +54,13 @@ function( create_symlink target alias)
   add_custom_command(
     TARGET ${target}
     POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} ln -sf ${target} ${alias}
-    DEPENDS ${target}
+    COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+      ln -sf ${target} ${alias}
+      DEPENDS ${target}
   )
 
   install( FILES ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${alias}
     DESTINATION ${INST_BIN_DIR}
   )
 endfunction( create_symlink )
-
-
 

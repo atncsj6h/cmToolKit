@@ -5,7 +5,7 @@ libdir=${prefix}/@INST_LIB_DIR@
 libs=@INST_LIBS@
 
 Name:           @PROJECT@
-Version:        @VERSION@
+Version:        @VERSION_TRIPLET@
 Version_string: @VERSION_STRING@
 Description:    @DESCRIPTION@
 

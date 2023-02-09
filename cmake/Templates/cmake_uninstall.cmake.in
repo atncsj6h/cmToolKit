@@ -1,20 +1,36 @@
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #
-if( NOT EXISTS "@CMAKE_BINARY_DIR@/install_manifest.txt" )
+
+set( CMAKE_MANIFEST_PREFIX $ENV{CMAKE_MANIFEST_PREFIX} )
+message( STATUS "CMAKE_MANIFEST_PREFIX '${CMAKE_MANIFEST_PREFIX}'" )
+
+if( CMAKE_MANIFEST_PREFIX )
+  set( MANIFEST "${CMAKE_MANIFEST_PREFIX}_install_manifest"  )
+else()
+  set( MANIFEST "install_manifest"  )
+endif()
+
+if(CMAKE_INSTALL_COMPONENT)
+  set(CMAKE_INSTALL_MANIFEST "${MANIFEST}_${CMAKE_INSTALL_COMPONENT}.txt")
+else()
+  set(CMAKE_INSTALL_MANIFEST "${MANIFEST}.txt")
+endif()
+
+message( "@@  CMAKE_INSTALL_MANIFEST '${CMAKE_INSTALL_MANIFEST}'" )
+
+if( NOT EXISTS "@CMAKE_BINARY_DIR@/${CMAKE_INSTALL_MANIFEST}" )
   message( FATAL_ERROR "
- Missing install manifest: @CMAKE_BINARY_DIR@/install_manifest.txt" )
+ Missing install manifest: '@CMAKE_BINARY_DIR@/${CMAKE_INSTALL_MANIFEST}' " )
 endif()
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#
-file( READ "@CMAKE_BINARY_DIR@/install_manifest.txt" files )
+file( READ "@CMAKE_BINARY_DIR@/${CMAKE_INSTALL_MANIFEST}" files )
 string( REGEX REPLACE "\n" ";" files "${files}" )
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#
 foreach( file ${files} )
   set( this "$ENV{DESTDIR}${file}" )
-  message( STATUS "Uninstalling '${this}" )
+  message( STATUS "Uninstalling '${this}'" )
   if( EXISTS "${this}" OR IS_SYMLINK "${this}" )
     execute_process( COMMAND "@CMAKE_COMMAND@" -E remove "${this}"
       OUTPUT_QUIET ERROR_QUIET RESULT_VARIABLE rm_retc )
