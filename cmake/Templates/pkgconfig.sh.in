@@ -1,5 +1,11 @@
 #! /bin/sh
-#
+
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Copyright (c) 2022, 2023 Enrico Sorichetti
+# Distributed under the Boost Software License, Version 1.0.
+# (See accompanying file BOOST_LICENSE_1_0.txt or copy at
+# http://www.boost.org/LICENSE_1_0.txt)
+
 # Return information about the local @PROJECT@ installation
 
 project="@PROJECT@"
@@ -49,6 +55,10 @@ usage()
     echo "                      [-L$prefix/$libdir $libs]"
     echo "  --libs-only-L       required LDPATH linker flags"
     echo "                      [-L$prefix/$libdir]"
+    echo "  --rpath             RPATH linker flags"
+    echo "                      [-Wl,-rpath,$prefix/$libdir]"
+
+
     echo "  --libs-only-l       required LIBNAME linker flags"
     echo "                      [$libs]"
     echo "  --libs-only-other   required other linker flags"
@@ -99,12 +109,17 @@ while test $# -gt 0; do
       buff="$buff $prefix/$libdir"
      ;;
 
+    # display the rpath construct
+    --rpath | -rpath )
+      buff="$buff -Wl,-rpath,$prefix/$libdir"
+      ;;
+
     # display only the LIBNAME linker flags
     --libs-only-l | -libs-only-l )
       buff="$buff $libs"
       ;;
 
-    # disaply only the other linker flags
+    # display only the other linker flags
     --libs-only-other | -libs-only-other )
       usage 1
       ;;

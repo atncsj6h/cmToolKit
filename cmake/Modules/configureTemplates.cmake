@@ -7,8 +7,7 @@
 include_guard( GLOBAL )
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-macro( configure_template )
-
+function( configure_template )
   if( ${ARGC} EQUAL 1 )
     set( from ${ARGV0}.in )
     set( dest "${ARGV0}" )
@@ -16,9 +15,9 @@ macro( configure_template )
     set( from ${ARGV0} )
     set( dest "${ARGV1}" )
   endif()
-  vdrop( TEMPL_IN quiet )
-  find_file( TEMPL_IN ${from}
-      ${TEMPL_SOURCE_PATH} )
+  unset( TEMPL_IN )
+  unset( TEMPL_IN CACHE )
+  find_file( TEMPL_IN ${from} ${TEMPL_SOURCE_PATH} )
     if( TEMPL_IN )
       configure_file( ${TEMPL_IN}
         ${CMAKE_BINARY_DIR}/${dest} @ONLY)
@@ -26,18 +25,21 @@ macro( configure_template )
       string( TOUPPER "${flag}" flag )
       string( MAKE_C_IDENTIFIER "${flag}" flag )
       set( ${flag} 1)
+      return( PROPAGATE ${flag} )
     endif( TEMPL_IN )
-endmacro()
+endfunction()
 
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function( configure_templates )
+
   set( args "${ARGV}" )
   list( SORT args )
   list( REMOVE_DUPLICATES args )
+  set( flags "" )
   foreach( argv ${args} )
-    vdrop( TEMPL_IN quiet )
-    find_file( TEMPL_IN ${argv}.in
-      ${TEMPL_SOURCE_PATH} )
+    unset( TEMPL_IN )
+    unset( TEMPL_IN CACHE )
+    find_file( TEMPL_IN ${argv}.in ${TEMPL_SOURCE_PATH} )
     if( TEMPL_IN )
       configure_file( ${TEMPL_IN}
         ${CMAKE_BINARY_DIR}/${argv} @ONLY)
@@ -45,8 +47,9 @@ function( configure_templates )
       string( TOUPPER "${flag}" flag )
       string( MAKE_C_IDENTIFIER "${flag}" flag )
       add_compile_definitions( ${flag} )
+      set( ${flag} 1 )
+      list( APPEND flags ${flag} )
     endif( TEMPL_IN )
-
   endforeach()
-
+  return( PROPAGATE ${flags} )
 endfunction()

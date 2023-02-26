@@ -15,7 +15,6 @@ function( check_function )
   set( args "${ARGV}" )
   list( SORT args )
   list( REMOVE_DUPLICATES args )
-
   unset( required )
   unset( required CACHE )
   string( TOLOWER "${args}" args_lc )

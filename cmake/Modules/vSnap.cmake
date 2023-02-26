@@ -10,7 +10,7 @@ include_guard( GLOBAL )
 #
 function( vsnap )
 
-if( VDEBUG )
+if( VSNAP )
   set( _args "${ARGV}" )
   list( SORT _args )
   list( REMOVE_DUPLICATES _args )

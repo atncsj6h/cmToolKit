@@ -66,17 +66,22 @@ endif()
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #
 set( PROJECT cmToolKit )
-include( ${PROJECT}_CONST )
 
+set( VERSION_TRIPLET 1.0.0 )
+set( DESCRIPTION "cmToolKit" )
+set( VARIANT )
+set( PROVIDES )
+set( REQUIRES )
+set( SOVERSION )
 
 set( SRCDIR src )
 set( INCDIR c )
 
 project( ${PROJECT}
-  VERSION ${VERSION}
+  VERSION ${VERSION_TRIPLET}
   LANGUAGES C CXX
 )
-set( VERSION_STRING "${VERSION}" )
+set( VERSION_STRING "${VERSION_TRIPLET}" )
 set( VERSION_STRING "${VERSION_STRING}-${CMAKE_SYSTEM_PROCESSOR}" )
 
 include( rcsInfo)

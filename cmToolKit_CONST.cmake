@@ -1,6 +1,0 @@
-set( VERSION 1.0.0 )
-set( DESCRIPTION "cmToolKit description" )
-set( VARIANT )
-set( PROVIDES )
-set( REQUIRES )
-set( SOVERSION )
