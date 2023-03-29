@@ -1,5 +1,5 @@
 #- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Copyright (c) 2020-2021 Enrico Sorichetti
+# Copyright (c) 2020-2023 Enrico Sorichetti
 # Distributed under the Boost Software License, Version 1.0.
 # (See accompanying file BOOST_LICENSE_1_0.txt or copy at
 # http://www.boost.org/LICENSE_1_0.txt)
@@ -46,7 +46,7 @@ function( configure_templates )
       set( flag "have_${argv}" )
       string( TOUPPER "${flag}" flag )
       string( MAKE_C_IDENTIFIER "${flag}" flag )
-      add_compile_definitions( ${flag} )
+      # add_compile_definitions( ${flag} )
       set( ${flag} 1 )
       list( APPEND flags ${flag} )
     endif( TEMPL_IN )
